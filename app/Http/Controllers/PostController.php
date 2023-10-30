@@ -23,6 +23,13 @@ class PostController extends Controller
             'user_id' => $request->user_id,
         ]);
 
-        return response()->json(['post' => $post], 201);
+        return response()->json(['post' => $post], 201)
+            ->header('Location', route('posts.show', ['id' => $post->id]));
+    }
+
+    public function show($id): JsonResponse
+    {
+        $post = Post::with('user')->findOrFail($id);
+        return response()->json(['post' => $post], 200);
     }
 }
