@@ -9,6 +9,12 @@ use Illuminate\Http\JsonResponse;
 
 class PostController extends Controller
 {
+    public function index(Request $request): JsonResponse
+    {
+        $posts = Post::with('user')->orderBy('created_at', 'desc')->get();
+        return response()->json(['posts' => $posts], 200);
+    }
+
     public function store(PostRequest $request): JsonResponse
     {
         $post = Post::create([
